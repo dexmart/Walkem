@@ -12,6 +12,8 @@ import { getCategories, getProducts, getSettings } from "@/lib/data";
 
 export const revalidate = 3600;
 
+export const metadata = { alternates: { canonical: "/" } };
+
 export default async function HomePage() {
   const [settings, categories, fresh, featured] = await Promise.all([
     getSettings(),

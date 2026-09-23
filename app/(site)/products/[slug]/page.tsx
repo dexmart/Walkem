@@ -6,6 +6,8 @@ import { AddToCart } from "@/components/cart/AddToCart";
 import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
 import { ProductGallery } from "@/components/site/ProductGallery";
 import { ProductGrid } from "@/components/site/ProductGrid";
+import { JsonLd } from "@/components/site/JsonLd";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
 import { isPurchasable } from "@/lib/availability";
 import { getProductBySlug, getProducts, getSettings } from "@/lib/data";
 import { formatPrice } from "@/lib/format";
@@ -60,6 +62,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 pb-20 pt-28">
+      <JsonLd data={[productJsonLd(product, settings), breadcrumbJsonLd(crumbs)]} />
       <Breadcrumbs items={crumbs} />
 
       <div className="grid gap-8 md:grid-cols-2 lg:gap-12">

@@ -21,13 +21,11 @@ export function CartSheet() {
   const { items, total, open, setOpen, setQty, remove, clear, sync, storeName, whatsappNumber } = useCart();
   const [details, setDetails] = useState<CustomerDetails>({ fulfilment: "Pickup" });
   const [notices, setNotices] = useState<string[]>([]);
-  const [checking, setChecking] = useState(false);
 
   // Re-check stock and prices every time the cart is opened.
   useEffect(() => {
     if (!open || items.length === 0) return;
     let cancelled = false;
-    setChecking(true);
     fetch("/api/cart-sync", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -40,7 +38,7 @@ export function CartSheet() {
       .catch(() => {
         // Offline or API down: keep the cart as is; the owner confirms on WhatsApp anyway.
       })
-      .finally(() => !cancelled && setChecking(false));
+      ;
     return () => {
       cancelled = true;
     };
@@ -168,7 +166,7 @@ export function CartSheet() {
                 <span className="text-2xl font-bold text-primary">{formatPrice(total)}</span>
               </div>
               {orderUrl ? (
-                <Button asChild size="lg" className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]" aria-busy={checking}>
+                <Button asChild size="lg" className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]">
                   <a href={orderUrl} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Order on WhatsApp

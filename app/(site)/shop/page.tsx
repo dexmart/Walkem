@@ -4,6 +4,8 @@ import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CategoryChips } from "@/components/site/CategoryChips";
 import { ProductGrid } from "@/components/site/ProductGrid";
 import { ShopFilters } from "@/components/site/ShopFilters";
+import { JsonLd } from "@/components/site/JsonLd";
+import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo";
 import { getCategories, getProducts, getSettings } from "@/lib/data";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -24,13 +26,18 @@ export default async function ShopPage({ searchParams }: Props) {
     getProducts({ q, inStockOnly: stock === "1", fresh: fresh === "1" }),
   ]);
 
+  const crumbs = [
+    { name: "Home", path: "/" },
+    { name: "Shop", path: "/shop" },
+  ];
   const ask = settings.whatsapp_number
     ? buildWhatsAppUrl(settings.whatsapp_number, `Hi ${settings.name}! Do you have ${q ?? "something I'm looking for"}?`)
     : null;
 
   return (
     <div className="container mx-auto px-4 pb-20 pt-28">
-      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Shop", path: "/shop" }]} />
+      <JsonLd data={[breadcrumbJsonLd(crumbs), itemListJsonLd("All products", products)]} />
+      <Breadcrumbs items={crumbs} />
       <h1 className="mb-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">Shop African Groceries</h1>
       <p className="mb-8 max-w-2xl text-muted-foreground">
         Add what you need to your cart, then send the list to us on WhatsApp. We&apos;ll confirm prices and pickup or delivery.

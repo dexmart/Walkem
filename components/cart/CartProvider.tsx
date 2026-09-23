@@ -48,6 +48,8 @@ export function CartProvider({
     } catch {
       // Storage unavailable (private mode etc.) — cart just won't persist.
     }
+    // Reading localStorage has to wait until after hydration, so this setState in an effect is intended.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHydrated(true);
   }, []);
 

@@ -29,8 +29,6 @@ export default function Navigation({ storeName }: { storeName: string }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => setIsMobileMenuOpen(false), [pathname]);
-
   return (
     <header
       className={cn(
@@ -40,7 +38,7 @@ export default function Navigation({ storeName }: { storeName: string }) {
     >
       <nav className="container mx-auto px-4 py-3" aria-label="Main">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex min-w-0 items-center gap-2">
+          <Link href="/" className="flex min-w-0 items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
             <ShoppingBag className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8" />
             <span className="truncate font-display text-xl font-bold text-foreground sm:text-2xl">{storeName}</span>
           </Link>

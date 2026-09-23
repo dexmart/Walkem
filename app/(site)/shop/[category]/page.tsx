@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CategoryChips } from "@/components/site/CategoryChips";
 import { ProductGrid } from "@/components/site/ProductGrid";
+import { JsonLd } from "@/components/site/JsonLd";
+import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo";
 import { getCategories, getProducts } from "@/lib/data";
 
 export const revalidate = 3600;
@@ -33,16 +35,16 @@ export default async function CategoryPage({ params }: Props) {
   const { categories, category } = await findCategory((await params).category);
   if (!category) notFound();
   const products = await getProducts({ categorySlug: category.slug });
+  const crumbs = [
+    { name: "Home", path: "/" },
+    { name: "Shop", path: "/shop" },
+    { name: category.name, path: `/shop/${category.slug}` },
+  ];
 
   return (
     <div className="container mx-auto px-4 pb-20 pt-28">
-      <Breadcrumbs
-        items={[
-          { name: "Home", path: "/" },
-          { name: "Shop", path: "/shop" },
-          { name: category.name, path: `/shop/${category.slug}` },
-        ]}
-      />
+      <JsonLd data={[breadcrumbJsonLd(crumbs), itemListJsonLd(category.name, products)]} />
+      <Breadcrumbs items={crumbs} />
       <h1 className="mb-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">{category.name}</h1>
       <p className="mb-8 max-w-2xl text-muted-foreground">
         Authentic {category.name.toLowerCase()} available at Walkem Farm Market in Moncton.{" "}
