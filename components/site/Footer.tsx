@@ -69,9 +69,20 @@ export default function Footer({ settings: s, categories }: { settings: StoreSet
           </div>
         </div>
 
-        <div className="border-t border-background/20 pt-8 text-center text-sm text-background/70">
+        <div className="flex flex-col items-center justify-between gap-2 border-t border-background/20 pt-8 text-center text-sm text-background/70 sm:flex-row">
           <p>
             &copy; {year} {s.name}. All rights reserved.
+          </p>
+          <p>
+            Developed by{" "}
+            <a
+              href="https://techtomister.ca"
+              target="_blank"
+              rel="noopener"
+              className="font-medium text-background/90 underline-offset-4 hover:text-primary hover:underline"
+            >
+              techtomister.ca
+            </a>
           </p>
         </div>
       </div>
