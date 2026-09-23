@@ -9,7 +9,7 @@
     "start": "next start -p 8080",
     "lint": "eslint .",
     "test": "vitest run",
-    "db:push": "supabase db push --db-url \"$SUPABASE_DB_URL\" --include-seed"
+    "db:push": "supabase db push --include-seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
