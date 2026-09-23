@@ -1,7 +1,7 @@
 # Walkem Farm Market — E-commerce Rebuild Design
 
 Date: 2026-09-22
-Status: Approved in chat, pending spec review
+Status: Approved
 
 ## Goal
 
@@ -72,7 +72,7 @@ products
   price numeric(10,2) not null       -- CAD
   unit text not null                 -- "per lb", "per pack", "per bottle"...
   category_id uuid fk -> categories (on delete restrict)
-  images text[] default '{}'         -- storage paths, index 0 = cover
+  images text[] default {}        -- public image URLs, index 0 = cover
   quantity int not null default 0
   in_stock boolean not null default true
   is_fresh boolean default false     -- "Fresh this week"
@@ -87,7 +87,7 @@ store_settings                        -- single row, id = 1
   hero_title, hero_subtitle, about_text
 
 admins
-  user_id uuid pk fk -> auth.users
+  email text pk (lower-case) -- is_admin() matches the signed-in JWT email
 ```
 
 **Availability rule** (single source of truth, used by storefront and JSON-LD):
@@ -103,8 +103,8 @@ still mark an item out of stock with quantity remaining.
 
 Delivered as SQL migrations in `supabase/migrations/` plus `supabase/seed.sql`
 containing the current 8 products, 6 categories and store settings (placeholders
-the owner replaces in admin). Seed images are uploaded by a one-off script
-`scripts/seed-images.ts`.
+the owner replaces in admin). Seed products point at the existing photos served
+from `public/seed/`, so no service-role key is needed.
 
 ## Storefront
 
@@ -155,7 +155,7 @@ Notes: <notes>
 - **Product form** (react-hook-form + zod): all fields; slug auto-generated;
   image uploader accepting files or phone camera (`accept="image/*"`), images
   resized client-side to max 1600 px and converted to WebP before upload,
-  drag to reorder, first image = cover, delete removes from storage.
+  reorder with arrow buttons (touch friendly), first image = cover, delete removes from storage.
 - **Categories**: add, rename, reorder, delete (blocked if products exist).
 - **Settings**: edit `store_settings`, including weekly hours editor.
 - Errors surface as toasts; server actions validate with the same zod schemas.
