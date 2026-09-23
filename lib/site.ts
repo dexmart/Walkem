@@ -7,6 +7,7 @@ export const SITE_URL = (
 
 export const absoluteUrl = (path: string) => (/^https?:\/\//.test(path) ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`);
 
-export const FALLBACK_IMAGE = "/seed/product-spices.jpg";
+/** Walkem logo tile shown for products without a photo (app/product-placeholder.png/route.tsx). */
+export const FALLBACK_IMAGE = "/product-placeholder.png";
 
 export const coverImage = (images: string[] | null | undefined) => images?.[0] ?? FALLBACK_IMAGE;

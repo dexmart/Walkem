@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Camera, Loader2, Star, X } from "lucide-react";
 import { toast } from "sonner";
 import { browserClient } from "@/lib/supabase/browser";
-import { BUCKET, resizeToWebp } from "@/lib/images";
+import { BUCKET, toSquareWebp } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
 const MAX_IMAGES = 8;
@@ -37,7 +37,7 @@ export function ImageUploader({
     await Promise.all(
       batch.map(async (file) => {
         try {
-          const blob = await resizeToWebp(file);
+          const blob = await toSquareWebp(file);
           const path = `${new Date().getFullYear()}/${crypto.randomUUID()}.webp`;
           const { error } = await supabase.storage.from(BUCKET).upload(path, blob, { contentType: "image/webp", cacheControl: "31536000" });
           if (error) throw error;
@@ -85,7 +85,7 @@ export function ImageUploader({
         )}
       >
         <Camera className="h-8 w-8 text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">Take a photo or choose from your device. First photo is the cover.</p>
+        <p className="text-sm text-muted-foreground">Take a photo or choose from your device. Photos are cropped to a square from the centre, so keep the product in the middle. First photo is the cover.</p>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
