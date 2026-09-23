@@ -20,7 +20,7 @@ npm run dev                  # http://localhost:8080
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API → Project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase → Project Settings → API Keys → Publishable key |
-| `NEXT_PUBLIC_SITE_URL` | The public address of the site, e.g. `https://walkemfarmmarket.com` (no trailing slash) |
+| `NEXT_PUBLIC_SITE_URL` | The public address of the site, e.g. `https://walkem.ca` (no trailing slash) |
 
 Other commands: `npm test` (unit tests), `npm run lint`, `npm run build`.
 
