@@ -188,7 +188,7 @@ Notes: <notes>
   `.env*.local`, the nested duplicate `walkem-market-africa-main/`, `*.zip`, `dist`.
 - Push to a new GitHub repo (name/visibility confirmed with user before pushing).
 - Vercel project imported from GitHub; env vars: `NEXT_PUBLIC_SUPABASE_URL`,
-  `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`. The service-role key is
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL`. The service-role key is
   used only by the local seed script and never deployed.
 - `.env.example` committed; README rewritten (setup, Supabase, adding an admin,
   deploy).
