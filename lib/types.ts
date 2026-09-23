@@ -14,6 +14,8 @@ export type Product = {
   is_fresh: boolean;
   is_featured: boolean;
   is_visible: boolean;
+  /** Shown on the site with a "Coming soon" badge but can't be added to the cart. */
+  is_coming_soon: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -52,4 +54,4 @@ export type CartItem = {
   maxQty: number;
 };
 
-export type CustomerDetails = { name?: string; fulfilment?: "Pickup" | "Delivery"; notes?: string };
+export type CustomerDetails = { name?: string; fulfilment?: "Pickup" | "Delivery"; address?: string; notes?: string };

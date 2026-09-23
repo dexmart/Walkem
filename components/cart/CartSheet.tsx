@@ -3,23 +3,17 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AlertCircle, MessageCircle, ShoppingBag, Trash2 } from "lucide-react";
+import { AlertCircle, ShoppingBag, Trash2 } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatPrice } from "@/lib/format";
-import { buildOrderMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 import { FALLBACK_IMAGE } from "@/lib/site";
-import type { CustomerDetails } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { QtyStepper } from "./QtyStepper";
+import { CheckoutFields, OrderNowButton } from "./Checkout";
 
 export function CartSheet() {
-  const { items, total, open, setOpen, setQty, remove, clear, refresh, storeName, whatsappNumber } = useCart();
-  const [details, setDetails] = useState<CustomerDetails>({ fulfilment: "Pickup" });
+  const { items, total, open, setOpen, setQty, remove, clear, refresh } = useCart();
   const [notices, setNotices] = useState<string[]>([]);
 
   // Re-check stock and prices every time the cart is opened.
@@ -31,8 +25,6 @@ export function CartSheet() {
       cancelled = true;
     };
   }, [open, refresh]);
-
-  const orderUrl = whatsappNumber ? buildWhatsAppUrl(whatsappNumber, buildOrderMessage(items, storeName, details)) : null;
 
   return (
     <Sheet open={open} onOpenChange={(o) => { setOpen(o); if (!o) setNotices([]); }}>
@@ -106,43 +98,8 @@ export function CartSheet() {
                 ))}
               </ul>
 
-              <div className="mt-4 space-y-4 rounded-xl bg-muted/50 p-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="cart-name">Your name (optional)</Label>
-                  <Input
-                    id="cart-name"
-                    value={details.name ?? ""}
-                    onChange={(e) => setDetails((d) => ({ ...d, name: e.target.value }))}
-                    autoComplete="name"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Pickup or delivery?</Label>
-                  <RadioGroup
-                    value={details.fulfilment}
-                    onValueChange={(v) => setDetails((d) => ({ ...d, fulfilment: v as CustomerDetails["fulfilment"] }))}
-                    className="flex gap-6"
-                  >
-                    {(["Pickup", "Delivery"] as const).map((v) => (
-                      <div key={v} className="flex items-center gap-2">
-                        <RadioGroupItem value={v} id={`f-${v}`} />
-                        <Label htmlFor={`f-${v}`} className="font-normal">
-                          {v}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="cart-notes">Notes (optional)</Label>
-                  <Textarea
-                    id="cart-notes"
-                    rows={2}
-                    value={details.notes ?? ""}
-                    onChange={(e) => setDetails((d) => ({ ...d, notes: e.target.value }))}
-                    placeholder="Delivery address, best time, substitutions…"
-                  />
-                </div>
+              <div className="mt-4 rounded-xl bg-muted/50 p-4">
+                <CheckoutFields full idPrefix="sheet" />
               </div>
             </div>
 
@@ -151,21 +108,8 @@ export function CartSheet() {
                 <span className="text-muted-foreground">Estimated total</span>
                 <span className="text-2xl font-bold text-primary">{formatPrice(total)}</span>
               </div>
-              {orderUrl ? (
-                <Button asChild size="lg" className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]">
-                  <a href={orderUrl} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Order now
-                  </a>
-                </Button>
-              ) : (
-                <p className="rounded-lg bg-muted p-3 text-center text-sm text-muted-foreground">
-                  WhatsApp ordering opens soon. Please visit or call the store in the meantime.
-                </p>
-              )}
-              <p className="text-center text-xs text-muted-foreground">
-                Opens WhatsApp with your order. No payment is taken on this site. Final price and delivery are confirmed with you there.
-              </p>
+              <OrderNowButton size="lg" />
+              <p className="text-center text-xs text-muted-foreground">Final price and delivery are confirmed with you on WhatsApp.</p>
               <button type="button" onClick={clear} className="mx-auto block text-sm text-muted-foreground underline hover:text-destructive">
                 Clear cart
               </button>

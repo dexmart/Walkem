@@ -59,7 +59,7 @@ export async function getProducts(opts: ProductQuery = {}): Promise<ProductWithC
     .eq("is_visible", true);
 
   if (opts.categorySlug) query = query.eq("category.slug", opts.categorySlug);
-  if (opts.inStockOnly) query = query.eq("in_stock", true).gt("quantity", 0);
+  if (opts.inStockOnly) query = query.eq("in_stock", true).eq("is_coming_soon", false).gt("quantity", 0);
   if (opts.fresh) query = query.eq("is_fresh", true);
   if (opts.featured) query = query.eq("is_featured", true);
   const term = opts.q?.replace(/[,()%*\\]/g, " ").trim();
@@ -87,13 +87,13 @@ export async function getProductBySlug(slug: string): Promise<ProductWithCategor
   return data ? toProduct(data as unknown as ProductWithCategory) : null;
 }
 
-export type ProductStock = Pick<Product, "id" | "name" | "price" | "quantity" | "in_stock" | "is_visible">;
+export type ProductStock = Pick<Product, "id" | "name" | "price" | "quantity" | "in_stock" | "is_visible" | "is_coming_soon">;
 
 export async function getProductsByIds(ids: string[]): Promise<ProductStock[]> {
   if (!ids.length) return [];
   const { data, error } = await publicClient()
     .from("products")
-    .select("id, name, price, quantity, in_stock, is_visible")
+    .select("id, name, price, quantity, in_stock, is_visible, is_coming_soon")
     .in("id", ids);
   if (error) {
     console.error("getProductsByIds", error.message);

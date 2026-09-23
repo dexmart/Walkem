@@ -10,7 +10,7 @@ export type CartAction =
   | { type: "remove"; productId: string }
   | { type: "clear" }
   | { type: "hydrate"; items: CartItem[] }
-  | { type: "sync"; products: Pick<Product, "id" | "name" | "price" | "quantity" | "in_stock" | "is_visible">[] };
+  | { type: "sync"; products: Pick<Product, "id" | "name" | "price" | "quantity" | "in_stock" | "is_visible" | "is_coming_soon">[] };
 
 const clamp = (n: number, max: number) => Math.max(0, Math.min(Math.floor(n), max));
 

@@ -4,11 +4,14 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 import { toast } from "sonner";
 import { cartCount, cartReducer, cartTotal, syncChanges } from "@/lib/cart";
 import { maxQty } from "@/lib/availability";
-import type { CartItem, Product } from "@/lib/types";
+import type { CartItem, CustomerDetails, Product } from "@/lib/types";
 
 const STORAGE_KEY = "walkem-cart-v1";
 
-export type CartProduct = Pick<Product, "id" | "slug" | "name" | "price" | "unit" | "images" | "quantity" | "in_stock" | "is_visible">;
+export type CartProduct = Pick<
+  Product,
+  "id" | "slug" | "name" | "price" | "unit" | "images" | "quantity" | "in_stock" | "is_visible" | "is_coming_soon"
+>;
 
 type CartContextValue = {
   items: CartItem[];
@@ -22,6 +25,9 @@ type CartContextValue = {
   clear: () => void;
   /** Re-checks stock and prices against the live catalogue; resolves to messages describing what changed. */
   refresh: () => Promise<string[]>;
+  /** Checkout details, shared by the mini cart and the cart panel. */
+  details: CustomerDetails;
+  setDetails: React.Dispatch<React.SetStateAction<CustomerDetails>>;
   storeName: string;
   whatsappNumber: string | null;
 };
@@ -40,6 +46,7 @@ export function CartProvider({
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
   const [open, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [details, setDetails] = useState<CustomerDetails>({});
   // Latest items for async work (refresh) without re-creating callbacks on every change.
   const itemsRef = useRef(state.items);
   useEffect(() => {
@@ -114,10 +121,12 @@ export function CartProvider({
       remove: (productId) => dispatch({ type: "remove", productId }),
       clear: () => dispatch({ type: "clear" }),
       refresh,
+      details,
+      setDetails,
       storeName,
       whatsappNumber,
     }),
-    [state.items, open, add, refresh, storeName, whatsappNumber],
+    [state.items, open, add, refresh, details, storeName, whatsappNumber],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

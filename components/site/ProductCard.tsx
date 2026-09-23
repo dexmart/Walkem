@@ -18,11 +18,15 @@ export function ProductCard({ product, priority = false }: { product: ProductWit
           fill
           priority={priority}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className={`object-cover transition-transform duration-300 group-hover:scale-105 ${available ? "" : "opacity-60 grayscale"}`}
+          className={`object-cover transition-transform duration-300 group-hover:scale-105 ${available || product.is_coming_soon ? "" : "opacity-60 grayscale"}`}
         />
         <div className="absolute left-2 top-2 flex flex-col gap-1">
           {product.is_fresh && available && <Badge className="bg-secondary text-secondary-foreground">Fresh</Badge>}
-          {!available && <Badge variant="secondary" className="bg-foreground/80 text-background">Sold out</Badge>}
+          {product.is_coming_soon ? (
+            <Badge className="bg-accent text-accent-foreground">Coming soon</Badge>
+          ) : (
+            !available && <Badge variant="secondary" className="bg-foreground/80 text-background">Sold out</Badge>
+          )}
         </div>
       </Link>
       <div className="flex flex-1 flex-col p-3 sm:p-4">

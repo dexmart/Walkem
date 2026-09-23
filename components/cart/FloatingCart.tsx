@@ -3,26 +3,26 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MessageCircle, ShoppingBag, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ShoppingBag, Trash2 } from "lucide-react";
 import { formatPrice } from "@/lib/format";
 import { FALLBACK_IMAGE } from "@/lib/site";
-import { buildOrderMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { useCart } from "./CartProvider";
 import { QtyStepper } from "./QtyStepper";
+import { CheckoutFields, OrderNowButton } from "./Checkout";
 
 /**
  * Basket pinned to the bottom-right corner. On devices with a mouse, hovering shows a mini cart
  * (edit quantities, remove, order on WhatsApp); clicking or tapping opens the full cart panel.
  */
 export function FloatingCart() {
-  const { items, count, total, open: sheetOpen, setOpen, setQty, remove, refresh, storeName, whatsappNumber } = useCart();
+  const { items, count, total, open: sheetOpen, setOpen, setQty, remove, refresh } = useCart();
   const [preview, setPreview] = useState(false);
   const [notices, setNotices] = useState<string[]>([]);
   const [bump, setBump] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const lastCount = useRef(count);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Briefly pulse the basket whenever something is added.
   useEffect(() => {
@@ -46,6 +46,8 @@ export function FloatingCart() {
   };
   const hidePreview = () => {
     clearTimeout(closeTimer.current);
+    // Keep it open while the customer is typing in it (e.g. the delivery address).
+    if (containerRef.current?.contains(document.activeElement) && document.activeElement?.tagName === "INPUT") return;
     closeTimer.current = setTimeout(() => {
       setPreview(false);
       setNotices([]);
@@ -59,20 +61,22 @@ export function FloatingCart() {
 
   if (sheetOpen) return null;
 
-  const orderUrl = whatsappNumber ? buildWhatsAppUrl(whatsappNumber, buildOrderMessage(items, storeName)) : null;
-
   return (
     <div
       className="fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6"
       onMouseEnter={showPreview}
       onMouseLeave={hidePreview}
+      ref={containerRef}
       onKeyDown={(e) => e.key === "Escape" && setPreview(false)}
+      onBlur={(e) => {
+        if (!containerRef.current?.contains(e.relatedTarget as Node | null) && !containerRef.current?.matches(":hover")) hidePreview();
+      }}
     >
       {preview && (
         <div
           role="dialog"
           aria-label="Cart preview"
-          className="absolute bottom-[4.5rem] right-0 flex max-h-[70vh] w-[22rem] flex-col overflow-hidden rounded-2xl border bg-background shadow-[var(--shadow-elevated)] animate-scale-in"
+          className="absolute bottom-[4.5rem] right-0 flex max-h-[80vh] w-[22rem] flex-col overflow-hidden rounded-2xl border bg-background shadow-[var(--shadow-elevated)] animate-scale-in"
         >
           <div className="flex items-center justify-between border-b px-4 py-3">
             <p className="font-display text-lg font-bold">Your cart</p>
@@ -137,19 +141,10 @@ export function FloatingCart() {
                   <span className="text-sm text-muted-foreground">Estimated total</span>
                   <span className="text-xl font-bold text-primary">{formatPrice(total)}</span>
                 </div>
-                {orderUrl ? (
-                  <Button asChild className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]">
-                    <a href={orderUrl} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="mr-2 h-4 w-4" />
-                      Order now
-                    </a>
-                  </Button>
-                ) : (
-                  <p className="text-center text-xs text-muted-foreground">Online ordering opens soon.</p>
-                )}
-                {orderUrl && <p className="text-center text-xs text-muted-foreground">Opens WhatsApp with your order — no payment online.</p>}
+                <CheckoutFields idPrefix="mini" />
+                <OrderNowButton />
                 <button type="button" onClick={openFullCart} className="w-full text-center text-sm text-muted-foreground underline hover:text-foreground">
-                  View full cart · add name &amp; delivery details
+                  View full cart · add name &amp; notes
                 </button>
               </div>
             </>

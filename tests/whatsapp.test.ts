@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildOrderMessage, buildWhatsAppUrl, normalizePhone, buildContactMessage } from "@/lib/whatsapp";
+import { buildOrderMessage, buildWhatsAppUrl, normalizePhone, buildContactMessage, orderProblem } from "@/lib/whatsapp";
 import type { CartItem } from "@/lib/types";
 
 const yam: CartItem = { productId: "1", slug: "premium-yam", name: "Premium Yam", price: 5.49, unit: "per lb", image: null, qty: 3, maxQty: 10 };
@@ -20,8 +20,28 @@ describe("buildOrderMessage", () => {
   });
 
   it("appends customer details only when given", () => {
-    const msg = buildOrderMessage([oil], "Walkem Farm Market", { name: "Ada", fulfilment: "Delivery", notes: "After 5pm" });
-    expect(msg.endsWith("Name: Ada\nPickup / Delivery: Delivery\nNotes: After 5pm")).toBe(true);
+    const msg = buildOrderMessage([oil], "Walkem Farm Market", { name: "Ada", fulfilment: "Pickup", notes: "After 5pm" });
+    expect(msg.endsWith("Name: Ada\nPickup / Delivery: Pickup\nNotes: After 5pm")).toBe(true);
+  });
+
+  it("includes the delivery address for delivery orders only", () => {
+    const delivery = buildOrderMessage([oil], "Walkem Farm Market", { fulfilment: "Delivery", address: " 12 King St, Moncton " });
+    expect(delivery.endsWith("Pickup / Delivery: Delivery\nDelivery address: 12 King St, Moncton")).toBe(true);
+    const pickup = buildOrderMessage([oil], "Walkem Farm Market", { fulfilment: "Pickup", address: "12 King St" });
+    expect(pickup).not.toContain("Delivery address");
+  });
+});
+
+describe("orderProblem", () => {
+  it("requires a pickup/delivery choice", () => {
+    expect(orderProblem({})).toBe("Choose pickup or delivery");
+  });
+  it("requires an address for delivery", () => {
+    expect(orderProblem({ fulfilment: "Delivery", address: "  " })).toBe("Add your delivery address");
+    expect(orderProblem({ fulfilment: "Delivery", address: "12 King St" })).toBeNull();
+  });
+  it("accepts pickup without an address", () => {
+    expect(orderProblem({ fulfilment: "Pickup" })).toBeNull();
   });
 });
 

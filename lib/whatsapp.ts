@@ -11,9 +11,17 @@ export function buildOrderMessage(items: CartItem[], storeName: string, d: Custo
   const extra: string[] = [];
   if (d.name?.trim()) extra.push(`Name: ${d.name.trim()}`);
   if (d.fulfilment) extra.push(`Pickup / Delivery: ${d.fulfilment}`);
+  if (d.fulfilment === "Delivery" && d.address?.trim()) extra.push(`Delivery address: ${d.address.trim()}`);
   if (d.notes?.trim()) extra.push(`Notes: ${d.notes.trim()}`);
   if (extra.length) lines.push("", ...extra);
   return lines.join("\n");
+}
+
+/** Why an order can't be sent yet, or null when it can. */
+export function orderProblem(d: CustomerDetails): string | null {
+  if (!d.fulfilment) return "Choose pickup or delivery";
+  if (d.fulfilment === "Delivery" && !d.address?.trim()) return "Add your delivery address";
+  return null;
 }
 
 export function buildContactMessage(f: { name: string; email?: string; phone?: string; message: string }): string {

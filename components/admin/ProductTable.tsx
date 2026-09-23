@@ -17,8 +17,13 @@ import { formatPrice } from "@/lib/format";
 import { coverImage } from "@/lib/site";
 import type { Category, ProductWithCategory } from "@/lib/types";
 
-type Toggle = "in_stock" | "is_fresh" | "is_visible";
-const TOGGLE_LABELS: Record<Toggle, string> = { in_stock: "In stock", is_fresh: "Fresh", is_visible: "Visible" };
+type Toggle = "in_stock" | "is_fresh" | "is_visible" | "is_coming_soon";
+const TOGGLE_LABELS: Record<Toggle, string> = {
+  in_stock: "In stock",
+  is_fresh: "Fresh",
+  is_visible: "Visible",
+  is_coming_soon: "Coming soon",
+};
 
 export function ProductTable({ products: initial, categories }: { products: ProductWithCategory[]; categories: Category[] }) {
   const router = useRouter();
@@ -140,6 +145,8 @@ export function ProductTable({ products: initial, categories }: { products: Prod
                     <div className="flex shrink-0 items-center gap-2">
                       {!p.is_visible ? (
                         <Badge variant="outline">Hidden</Badge>
+                      ) : p.is_coming_soon ? (
+                        <Badge className="bg-accent text-accent-foreground">Coming soon</Badge>
                       ) : !isPurchasable(p) ? (
                         <Badge variant="secondary">Sold out</Badge>
                       ) : null}

@@ -157,7 +157,7 @@ export function buildLlmsTxt(s: StoreSettings, categories: Category[], products:
     "",
     ...products.map(
       (p) =>
-        `- [${p.name}](${absoluteUrl(`/products/${p.slug}`)}): ${formatPrice(p.price)} ${p.unit} — ${isPurchasable(p) ? "In stock" : "Sold out"}${p.description ? `. ${p.description}` : ""}`,
+        `- [${p.name}](${absoluteUrl(`/products/${p.slug}`)}): ${formatPrice(p.price)} ${p.unit} — ${p.is_coming_soon ? "Coming soon" : isPurchasable(p) ? "In stock" : "Sold out"}${p.description ? `. ${p.description}` : ""}`,
     ),
     "",
     "## Pages",

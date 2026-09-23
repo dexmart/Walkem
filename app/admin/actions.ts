@@ -50,7 +50,7 @@ export async function saveProduct(id: string | null, input: ProductInput): Promi
   return { ok: true, id: data.id };
 }
 
-const TOGGLES = ["in_stock", "is_fresh", "is_visible", "is_featured"] as const;
+const TOGGLES = ["in_stock", "is_fresh", "is_visible", "is_featured", "is_coming_soon"] as const;
 
 export async function toggleProductField(id: string, field: (typeof TOGGLES)[number], value: boolean): Promise<Result> {
   const { supabase } = await requireAdmin();

@@ -38,6 +38,7 @@ const yam: ProductWithCategory = {
   is_fresh: true,
   is_featured: true,
   is_visible: true,
+  is_coming_soon: false,
   created_at: "2026-09-22T00:00:00Z",
   updated_at: "2026-09-22T00:00:00Z",
   category: { name: "Root Vegetables", slug: "root-vegetables" },

@@ -35,7 +35,8 @@ const SWITCHES = [
   { name: "in_stock", label: "In stock", hint: "Turn off when sold out. Setting quantity to 0 does this automatically." },
   { name: "is_fresh", label: "Fresh this week", hint: "Shows in the “Fresh this week” section on the homepage." },
   { name: "is_featured", label: "Featured", hint: "Shows in “Our Products” on the homepage." },
-  { name: "is_visible", label: "Visible on site", hint: "Turn off to hide the product without deleting it." },
+  { name: "is_visible", label: "Visible on site", hint: "Turn off to hide the product without deleting it — useful for drafts." },
+  { name: "is_coming_soon", label: "Coming soon", hint: "Show it on the site with a “Coming soon” badge. Customers can ask about it but can’t order yet." },
 ] as const;
 
 export function ProductForm({ product, categories }: { product?: Product; categories: Category[] }) {
@@ -63,6 +64,7 @@ export function ProductForm({ product, categories }: { product?: Product; catego
           is_fresh: false,
           is_featured: false,
           is_visible: true,
+          is_coming_soon: false,
         },
   });
   const { register, control, handleSubmit, setValue, formState } = form;

@@ -22,7 +22,7 @@ describe("cartReducer", () => {
     const s = { items: [{ ...base, qty: 3 }, { ...base, productId: "2", name: "Oil", qty: 1 }] };
     const out = cartReducer(s, {
       type: "sync",
-      products: [{ id: "1", name: "Yam", price: 6, quantity: 2, in_stock: true, is_visible: true }],
+      products: [{ id: "1", name: "Yam", price: 6, quantity: 2, in_stock: true, is_visible: true, is_coming_soon: false }],
     });
     expect(out.items).toEqual([{ ...base, price: 6, qty: 2, maxQty: 2 }]);
     expect(syncChanges(s.items, out.items)).toEqual([

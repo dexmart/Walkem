@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CheckCircle2, MessageCircle, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, MessageCircle, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { Breadcrumbs, type Crumb } from "@/components/site/Breadcrumbs";
@@ -66,12 +66,13 @@ export default async function ProductPage({ params }: Props) {
       <Breadcrumbs items={crumbs} />
 
       <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
-        <ProductGallery images={product.images} name={product.name} soldOut={!available} />
+        <ProductGallery images={product.images} name={product.name} soldOut={!available && !product.is_coming_soon} />
 
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
             {product.category && <Badge variant="outline">{product.category.name}</Badge>}
             {product.is_fresh && available && <Badge className="bg-secondary text-secondary-foreground">Fresh this week</Badge>}
+            {product.is_coming_soon && <Badge className="bg-accent text-accent-foreground">Coming soon</Badge>}
           </div>
           <h1 className="mb-4 font-display text-3xl font-bold text-foreground sm:text-4xl">{product.name}</h1>
           <p className="mb-4 flex items-baseline gap-2">
@@ -79,7 +80,11 @@ export default async function ProductPage({ params }: Props) {
             <span className="text-muted-foreground">{product.unit}</span>
           </p>
           <p className={`mb-6 flex items-center gap-2 font-medium ${available ? "text-secondary" : "text-muted-foreground"}`}>
-            {available ? (
+            {product.is_coming_soon ? (
+              <>
+                <Clock className="h-5 w-5" /> Coming soon — ask us when it&apos;s arriving
+              </>
+            ) : available ? (
               <>
                 <CheckCircle2 className="h-5 w-5" /> In stock
                 {product.quantity <= 10 && <span className="font-normal text-muted-foreground">— only {product.quantity} left</span>}

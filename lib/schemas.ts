@@ -45,6 +45,7 @@ export const productSchema = z.object({
   is_fresh: z.boolean(),
   is_featured: z.boolean(),
   is_visible: z.boolean(),
+  is_coming_soon: z.boolean().default(false),
 });
 export type ProductInput = z.input<typeof productSchema>;
 export type ProductData = z.output<typeof productSchema>;
