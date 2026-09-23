@@ -18,33 +18,19 @@ import { useCart } from "./CartProvider";
 import { QtyStepper } from "./QtyStepper";
 
 export function CartSheet() {
-  const { items, total, open, setOpen, setQty, remove, clear, sync, storeName, whatsappNumber } = useCart();
+  const { items, total, open, setOpen, setQty, remove, clear, refresh, storeName, whatsappNumber } = useCart();
   const [details, setDetails] = useState<CustomerDetails>({ fulfilment: "Pickup" });
   const [notices, setNotices] = useState<string[]>([]);
 
   // Re-check stock and prices every time the cart is opened.
   useEffect(() => {
-    if (!open || items.length === 0) return;
+    if (!open) return;
     let cancelled = false;
-    fetch("/api/cart-sync", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ids: items.map((i) => i.productId) }),
-    })
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then(({ products }) => {
-        if (!cancelled) setNotices(sync(products));
-      })
-      .catch(() => {
-        // Offline or API down: keep the cart as is; the owner confirms on WhatsApp anyway.
-      })
-      ;
+    refresh().then((n) => !cancelled && setNotices(n));
     return () => {
       cancelled = true;
     };
-    // Only when the sheet opens, not on every quantity change.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, refresh]);
 
   const orderUrl = whatsappNumber ? buildWhatsAppUrl(whatsappNumber, buildOrderMessage(items, storeName, details)) : null;
 

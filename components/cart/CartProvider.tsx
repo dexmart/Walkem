@@ -1,8 +1,8 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
-import { cartCount, cartReducer, cartTotal, syncChanges, type CartAction } from "@/lib/cart";
+import { cartCount, cartReducer, cartTotal, syncChanges } from "@/lib/cart";
 import { maxQty } from "@/lib/availability";
 import type { CartItem, Product } from "@/lib/types";
 
@@ -20,8 +20,8 @@ type CartContextValue = {
   setQty: (productId: string, qty: number) => void;
   remove: (productId: string) => void;
   clear: () => void;
-  /** Applies live stock/prices; returns messages describing what changed. */
-  sync: (products: Extract<CartAction, { type: "sync" }>["products"]) => string[];
+  /** Re-checks stock and prices against the live catalogue; resolves to messages describing what changed. */
+  refresh: () => Promise<string[]>;
   storeName: string;
   whatsappNumber: string | null;
 };
@@ -40,6 +40,11 @@ export function CartProvider({
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
   const [open, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  // Latest items for async work (refresh) without re-creating callbacks on every change.
+  const itemsRef = useRef(state.items);
+  useEffect(() => {
+    itemsRef.current = state.items;
+  }, [state.items]);
 
   useEffect(() => {
     try {
@@ -77,6 +82,26 @@ export function CartProvider({
     toast.success(`Added ${p.name} to your cart`, { action: { label: "View cart", onClick: () => setOpen(true) } });
   }, []);
 
+  const refresh = useCallback(async () => {
+    const before = itemsRef.current;
+    if (before.length === 0) return [];
+    try {
+      const res = await fetch("/api/cart-sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: before.map((i) => i.productId) }),
+      });
+      if (!res.ok) return [];
+      const { products } = await res.json();
+      const after = cartReducer({ items: itemsRef.current }, { type: "sync", products }).items;
+      dispatch({ type: "hydrate", items: after });
+      return syncChanges(before, after);
+    } catch {
+      // Offline or API down: keep the cart as is; the store confirms on WhatsApp anyway.
+      return [];
+    }
+  }, []);
+
   const value = useMemo<CartContextValue>(
     () => ({
       items: state.items,
@@ -88,15 +113,11 @@ export function CartProvider({
       setQty: (productId, qty) => dispatch({ type: "setQty", productId, qty }),
       remove: (productId) => dispatch({ type: "remove", productId }),
       clear: () => dispatch({ type: "clear" }),
-      sync: (products) => {
-        const after = cartReducer(state, { type: "sync", products }).items;
-        dispatch({ type: "hydrate", items: after });
-        return syncChanges(state.items, after);
-      },
+      refresh,
       storeName,
       whatsappNumber,
     }),
-    [state, open, add, storeName, whatsappNumber],
+    [state.items, open, add, refresh, storeName, whatsappNumber],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -15,11 +15,12 @@ export const revalidate = 3600;
 export const metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
-  const [settings, categories, fresh, featured] = await Promise.all([
+  const [settings, categories, fresh, featured, menu] = await Promise.all([
     getSettings(),
     getCategories(),
     getProducts({ fresh: true, inStockOnly: true, limit: 4 }),
     getProducts({ featured: true, limit: 8 }),
+    getProducts({ categorySlug: "restaurant-bar" }),
   ]);
 
   return (
@@ -68,7 +69,7 @@ export default async function HomePage() {
       </section>
 
       <About aboutText={settings.about_text} />
-      <MenuSpecials whatsappNumber={settings.whatsapp_number} />
+      <MenuSpecials products={menu} />
       <StoreInfo settings={settings} />
       <Contact whatsappNumber={settings.whatsapp_number} email={settings.email} />
     </>

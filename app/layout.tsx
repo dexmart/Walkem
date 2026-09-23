@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-CA" className={`${sans.variable} ${display.variable}`}>
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}
-        <Toaster />
+        <Toaster position="top-center" />
       </body>
     </html>
   );
