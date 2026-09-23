@@ -147,7 +147,7 @@ export function buildLlmsTxt(s: StoreSettings, categories: Category[], products:
     "",
     "## How to order",
     "",
-    "Customers browse products on the website, add them to a cart and tap “Order on WhatsApp”. This opens WhatsApp with the order list already written; the store confirms the final price and arranges pickup or local delivery in the chat. No payment is taken on the website. Prices are in Canadian dollars (CAD).",
+    "Customers browse products on the website, add them to a cart and tap “Order now”. This opens WhatsApp with the order list already written; the store confirms the final price and arranges pickup or local delivery in the chat. No payment is taken on the website. Prices are in Canadian dollars (CAD).",
     "",
     "## Categories",
     "",

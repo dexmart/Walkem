@@ -141,12 +141,13 @@ export function FloatingCart() {
                   <Button asChild className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]">
                     <a href={orderUrl} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-2 h-4 w-4" />
-                      Order now on WhatsApp
+                      Order now
                     </a>
                   </Button>
                 ) : (
-                  <p className="text-center text-xs text-muted-foreground">WhatsApp ordering opens soon.</p>
+                  <p className="text-center text-xs text-muted-foreground">Online ordering opens soon.</p>
                 )}
+                {orderUrl && <p className="text-center text-xs text-muted-foreground">Opens WhatsApp with your order — no payment online.</p>}
                 <button type="button" onClick={openFullCart} className="w-full text-center text-sm text-muted-foreground underline hover:text-foreground">
                   View full cart · add name &amp; delivery details
                 </button>

@@ -155,7 +155,7 @@ export function CartSheet() {
                 <Button asChild size="lg" className="w-full bg-[#25D366] text-white hover:bg-[#1ebe5b]">
                   <a href={orderUrl} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
-                    Order on WhatsApp
+                    Order now
                   </a>
                 </Button>
               ) : (
@@ -164,7 +164,7 @@ export function CartSheet() {
                 </p>
               )}
               <p className="text-center text-xs text-muted-foreground">
-                No payment is taken on this site. Final price and delivery are confirmed with you on WhatsApp.
+                Opens WhatsApp with your order. No payment is taken on this site. Final price and delivery are confirmed with you there.
               </p>
               <button type="button" onClick={clear} className="mx-auto block text-sm text-muted-foreground underline hover:text-destructive">
                 Clear cart
