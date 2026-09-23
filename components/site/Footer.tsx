@@ -1,90 +1,80 @@
-import { Facebook, Instagram, Twitter, ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
+import type { Category, StoreSettings } from "@/lib/types";
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
-  const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-  ];
+export default function Footer({ settings: s, categories }: { settings: StoreSettings; categories: Category[] }) {
+  const year = new Date().getFullYear();
+  const cityLine = [s.city, s.province].filter(Boolean).join(", ") + (s.postal_code ? ` ${s.postal_code}` : "");
 
   return (
-    <footer className="bg-foreground text-background py-12">
+    <footer className="bg-foreground py-12 text-background">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
+        <div className="mb-8 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+          <div className="sm:col-span-2">
+            <div className="mb-4 flex items-center gap-2">
               <ShoppingBag className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold font-display">
-                Walkem Farm Market
-              </span>
+              <span className="font-display text-2xl font-bold">{s.name}</span>
             </div>
-            <p className="text-background/80 mb-4 max-w-md">
-              Your trusted source for authentic African groceries and fresh produce. 
-              Serving the community with pride and quality for over 10 years.
+            <p className="mb-4 max-w-md text-background/80">
+              Your trusted source for authentic African &amp; Caribbean groceries and fresh produce in {s.city}, New
+              Brunswick.
             </p>
-            <div className="flex gap-4">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-full bg-background/10 hover:bg-primary flex items-center justify-center transition-colors"
-                >
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="mb-4 text-lg font-semibold">Shop</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#home" className="text-background/80 hover:text-primary transition-colors">
-                  Home
-                </a>
+                <Link href="/shop" className="text-background/80 transition-colors hover:text-primary">
+                  All products
+                </Link>
               </li>
-              <li>
-                <a href="#about" className="text-background/80 hover:text-primary transition-colors">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#products" className="text-background/80 hover:text-primary transition-colors">
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="text-background/80 hover:text-primary transition-colors">
-                  Contact
-                </a>
-              </li>
+              {categories.map((c) => (
+                <li key={c.id}>
+                  <Link href={`/shop/${c.slug}`} className="text-background/80 transition-colors hover:text-primary">
+                    {c.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
             <ul className="space-y-2 text-background/80">
-              <li>123 Market Street</li>
-              <li>Springfield, ST 12345</li>
-              <li className="pt-2">(555) 123-4567</li>
-              <li>info@walkemfarmmarket.com</li>
+              {s.address_line && <li>{s.address_line}</li>}
+              <li>{cityLine}</li>
+              {s.phone && (
+                <li className="pt-2">
+                  <a href={`tel:${s.phone.replace(/[^\d+]/g, "")}`} className="hover:text-primary">
+                    {s.phone}
+                  </a>
+                </li>
+              )}
+              {s.whatsapp_number && (
+                <li>
+                  <a href={`https://wa.me/${s.whatsapp_number}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                    WhatsApp us
+                  </a>
+                </li>
+              )}
+              {s.email && (
+                <li className="break-words">
+                  <a href={`mailto:${s.email}`} className="hover:text-primary">
+                    {s.email}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-background/20 pt-8 text-center text-background/70">
-          <p>&copy; {currentYear} Walkem Farm Market. All rights reserved.</p>
+        <div className="border-t border-background/20 pt-8 text-center text-sm text-background/70">
+          <p>
+            &copy; {year} {s.name}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

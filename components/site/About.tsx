@@ -1,6 +1,6 @@
 import { Heart, Truck, Award } from "lucide-react";
 
-const About = () => {
+export default function About({ aboutText }: { aboutText: string | null }) {
   const features = [
     {
       icon: Heart,
@@ -27,16 +27,15 @@ const About = () => {
             Bringing Africa to Your Kitchen
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Walkem Farm Market is your premier destination for authentic African groceries. 
-            We're passionate about connecting our community with the flavors of home through 
-            quality products, exceptional service, and a commitment to cultural excellence.
+            {aboutText ??
+              "Walkem Farm Market is your premier destination for authentic African groceries. We're passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence."}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {features.map((feature, index) => (
             <div
-              key={index}
+              key={feature.title}
               className="bg-card p-8 rounded-xl shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-elevated)] transition-all duration-300 animate-scale-in text-center"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -51,6 +50,4 @@ const About = () => {
       </div>
     </section>
   );
-};
-
-export default About;
+}

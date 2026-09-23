@@ -1,113 +1,75 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
+import { MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast as sonner } from "sonner";
-import { Send } from "lucide-react";
+import { buildContactMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+const empty = { name: "", email: "", phone: "", message: "" };
+
+export default function Contact({ whatsappNumber, email }: { whatsappNumber: string | null; email: string | null }) {
+  const [formData, setFormData] = useState(empty);
+  const canSend = Boolean(whatsappNumber || email);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
-      sonner.error("Missing Information", { description: "Please fill in all required fields." });
+    if (!formData.name.trim() || !formData.message.trim()) {
+      toast.error("Missing information", { description: "Please add your name and a message." });
       return;
     }
-
-    // Success message
-    sonner.success("Message Sent!", { description: "Thank you for contacting us. We'll get back to you soon." });
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
+    const text = buildContactMessage(formData);
+    if (whatsappNumber) {
+      window.open(buildWhatsAppUrl(whatsappNumber, text), "_blank", "noopener");
+    } else if (email) {
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent("Message from the website")}&body=${encodeURIComponent(text)}`;
+    }
+    setFormData(empty);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
-    <section id="contact" className="py-24 bg-background">
+    <section id="contact" className="bg-background py-20 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-foreground mb-6">
-              Get In Touch
-            </h2>
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-12 text-center animate-fade-in-up">
+            <h2 className="mb-6 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">Get In Touch</h2>
             <p className="text-lg text-muted-foreground">
-              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              Have a question or looking for something special? Send us a message
+              {whatsappNumber ? " on WhatsApp" : ""} and we&apos;ll get back to you.
             </p>
           </div>
 
-          <div className="bg-card p-8 md:p-12 rounded-xl shadow-[var(--shadow-elevated)] animate-scale-in">
+          <div className="rounded-xl bg-card p-6 shadow-[var(--shadow-elevated)] animate-scale-in sm:p-8 md:p-12">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground">
                     Your Name *
                   </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    required
-                    className="bg-background border-input"
-                  />
+                  <Input id="name" name="name" value={formData.name} onChange={handleChange} required autoComplete="name" />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Email Address *
+                  <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground">
+                    Email Address
                   </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="john@example.com"
-                    required
-                    className="bg-background border-input"
-                  />
+                  <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} autoComplete="email" />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="phone" className="mb-2 block text-sm font-medium text-foreground">
                   Phone Number
                 </label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="(555) 123-4567"
-                  className="bg-background border-input"
-                />
+                <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} autoComplete="tel" />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                <label htmlFor="message" className="mb-2 block text-sm font-medium text-foreground">
                   Message *
                 </label>
                 <Textarea
@@ -118,17 +80,24 @@ const Contact = () => {
                   placeholder="Tell us how we can help you..."
                   required
                   rows={6}
-                  className="bg-background border-input resize-none"
+                  className="resize-none"
                 />
               </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                Send Message
-                <Send className="ml-2 h-5 w-5" />
+              <Button type="submit" size="lg" className="w-full" disabled={!canSend}>
+                {whatsappNumber ? (
+                  <>
+                    Send on WhatsApp
+                    <MessageCircle className="ml-2 h-5 w-5" />
+                  </>
+                ) : canSend ? (
+                  <>
+                    Send by email
+                    <Send className="ml-2 h-5 w-5" />
+                  </>
+                ) : (
+                  "Contact details coming soon"
+                )}
               </Button>
             </form>
           </div>
@@ -136,6 +105,4 @@ const Contact = () => {
       </div>
     </section>
   );
-};
-
-export default Contact;
+}
