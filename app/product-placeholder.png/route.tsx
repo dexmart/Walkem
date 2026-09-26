@@ -34,7 +34,8 @@ export function GET() {
         >
           W
         </div>
-        <div style={{ marginTop: 44, fontSize: 64, fontWeight: 800, color: "#2B211C" }}>Walkem Farm Market</div>
+        <div style={{ marginTop: 44, fontSize: 72, fontWeight: 800, color: "#2B211C" }}>Walkem</div>
+        <div style={{ marginTop: 4, fontSize: 44, fontWeight: 700, color: "#2B211C" }}>African Food Market</div>
         <div style={{ marginTop: 12, fontSize: 34, color: "#2E7D4F", letterSpacing: 2 }}>MONCTON, NB</div>
       </div>
     ),

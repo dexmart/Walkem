@@ -14,7 +14,7 @@ export default function Hero({ settings }: { settings: StoreSettings }) {
       <div className="absolute inset-0 z-0">
         <Image
           src="/seed/hero-banner.jpg"
-          alt="Fresh African produce at Walkem Farm Market"
+          alt="Fresh African produce at Walkem African Food Market"
           fill
           priority
           sizes="100vw"

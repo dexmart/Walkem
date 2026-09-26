@@ -12,7 +12,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Shop African Groceries in Moncton",
   description:
-    "Browse yam, plantain, palm oil, egusi, spices, flours and more at Walkem Farm Market in Moncton, NB. Add to cart and order on WhatsApp.",
+    "Browse yam, plantain, palm oil, egusi, spices, flours and more at Walkem African Food Market in Moncton, NB. Add to cart and order on WhatsApp.",
   alternates: { canonical: "/shop" },
 };
 

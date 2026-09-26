@@ -25,7 +25,7 @@ export function orderProblem(d: CustomerDetails): string | null {
 }
 
 export function buildContactMessage(f: { name: string; email?: string; phone?: string; message: string }): string {
-  const lines = ["Hi Walkem Farm Market! Message from the website:", "", f.message.trim(), "", `Name: ${f.name.trim()}`];
+  const lines = ["Hi Walkem African Food Market! Message from the website:", "", f.message.trim(), "", `Name: ${f.name.trim()}`];
   if (f.email?.trim()) lines.push(`Email: ${f.email.trim()}`);
   if (f.phone?.trim()) lines.push(`Phone: ${f.phone.trim()}`);
   return lines.join("\n");

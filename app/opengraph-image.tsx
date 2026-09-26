@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Walkem Farm Market – Authentic African & Caribbean groceries in Moncton, NB";
+export const alt = "Walkem African Food Market – Authentic African & Caribbean groceries in Moncton, NB";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -39,7 +39,7 @@ export default function OpengraphImage() {
           </div>
           <div style={{ fontSize: 40, color: "#2E7D4F", fontWeight: 700, letterSpacing: 2 }}>MONCTON, NB</div>
         </div>
-        <div style={{ fontSize: 92, fontWeight: 800, color: "#2B211C", lineHeight: 1.05 }}>Walkem Farm Market</div>
+        <div style={{ fontSize: 76, fontWeight: 800, color: "#2B211C", lineHeight: 1.05 }}>Walkem African Food Market</div>
         <div style={{ fontSize: 44, color: "#EE6A2B", marginTop: 20, fontWeight: 700 }}>
           Authentic African &amp; Caribbean Groceries
         </div>

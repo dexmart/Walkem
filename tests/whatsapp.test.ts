@@ -7,10 +7,10 @@ const oil: CartItem = { productId: "2", slug: "red-palm-oil", name: "Red Palm Oi
 
 describe("buildOrderMessage", () => {
   it("lists items, line totals and estimated total", () => {
-    const msg = buildOrderMessage([yam, oil], "Walkem Farm Market");
+    const msg = buildOrderMessage([yam, oil], "Walkem African Food Market");
     expect(msg).toBe(
       [
-        "Hi Walkem Farm Market! I'd like to order:",
+        "Hi Walkem African Food Market! I'd like to order:",
         "• Premium Yam × 3 (per lb) — $16.47",
         "• Red Palm Oil × 1 (per bottle) — $12.99",
         "",
@@ -20,14 +20,14 @@ describe("buildOrderMessage", () => {
   });
 
   it("appends customer details only when given", () => {
-    const msg = buildOrderMessage([oil], "Walkem Farm Market", { name: "Ada", fulfilment: "Pickup", notes: "After 5pm" });
+    const msg = buildOrderMessage([oil], "Walkem African Food Market", { name: "Ada", fulfilment: "Pickup", notes: "After 5pm" });
     expect(msg.endsWith("Name: Ada\nPickup / Delivery: Pickup\nNotes: After 5pm")).toBe(true);
   });
 
   it("includes the delivery address for delivery orders only", () => {
-    const delivery = buildOrderMessage([oil], "Walkem Farm Market", { fulfilment: "Delivery", address: " 12 King St, Moncton " });
+    const delivery = buildOrderMessage([oil], "Walkem African Food Market", { fulfilment: "Delivery", address: " 12 King St, Moncton " });
     expect(delivery.endsWith("Pickup / Delivery: Delivery\nDelivery address: 12 King St, Moncton")).toBe(true);
-    const pickup = buildOrderMessage([oil], "Walkem Farm Market", { fulfilment: "Pickup", address: "12 King St" });
+    const pickup = buildOrderMessage([oil], "Walkem African Food Market", { fulfilment: "Pickup", address: "12 King St" });
     expect(pickup).not.toContain("Delivery address");
   });
 });
@@ -55,6 +55,6 @@ it("normalizePhone strips non-digits", () => expect(normalizePhone("+1 506-555")
 
 it("buildContactMessage includes provided fields", () => {
   expect(buildContactMessage({ name: "Ada", phone: "506", message: "Do you stock ogiri?" })).toBe(
-    "Hi Walkem Farm Market! Message from the website:\n\nDo you stock ogiri?\n\nName: Ada\nPhone: 506",
+    "Hi Walkem African Food Market! Message from the website:\n\nDo you stock ogiri?\n\nName: Ada\nPhone: 506",
   );
 });

@@ -27,19 +27,19 @@ on conflict (slug) do nothing;
 insert into public.store_settings (id, name, tagline, hero_title, hero_subtitle, about_text, hours)
 values (
   1,
-  'Walkem Farm Market',
+  'Walkem African Food Market',
   'Bringing Africa''s Flavours Closer to You',
   'Authentic African Groceries in Moncton',
   'Your Home for Authentic African & Caribbean Foods',
-  'Walkem Farm Market is your premier destination for authentic African groceries. We''re passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence.',
+  'Walkem African Food Market is your premier destination for authentic African groceries. We''re passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence.',
   '[
-    {"day": "Monday", "open": "09:00", "close": "20:00", "closed": false},
-    {"day": "Tuesday", "open": "09:00", "close": "20:00", "closed": false},
-    {"day": "Wednesday", "open": "09:00", "close": "20:00", "closed": false},
-    {"day": "Thursday", "open": "09:00", "close": "20:00", "closed": false},
-    {"day": "Friday", "open": "09:00", "close": "20:00", "closed": false},
-    {"day": "Saturday", "open": "09:00", "close": "21:00", "closed": false},
-    {"day": "Sunday", "open": "10:00", "close": "18:00", "closed": false}
+    {"day": "Monday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Tuesday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Wednesday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Thursday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Friday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Saturday", "open": "09:00", "close": "22:00", "closed": false},
+    {"day": "Sunday", "open": "12:00", "close": "20:00", "closed": false}
   ]'::jsonb
 )
 on conflict (id) do nothing;
