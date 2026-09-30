@@ -3,7 +3,7 @@ import { breadcrumbJsonLd, buildLlmsTxt, productJsonLd, storeJsonLd } from "@/li
 import type { Category, ProductWithCategory, StoreSettings } from "@/lib/types";
 
 const settings: StoreSettings = {
-  name: "Walkem African Food Market",
+  name: "Walkem Authentic African Groceries",
   tagline: "Bringing Africa's Flavours Closer to You",
   whatsapp_number: null,
   phone: null,
@@ -83,7 +83,7 @@ it("breadcrumbJsonLd numbers items with absolute URLs", () => {
 it("buildLlmsTxt summarises the store and lists products", () => {
   const cats: Category[] = [{ id: "c1", name: "Root Vegetables", slug: "root-vegetables", sort_order: 1 }];
   const txt = buildLlmsTxt(settings, cats, [yam]);
-  expect(txt.startsWith("# Walkem African Food Market")).toBe(true);
+  expect(txt.startsWith("# Walkem Authentic African Groceries")).toBe(true);
   expect(txt).toContain("Moncton");
   expect(txt).toContain("WhatsApp");
   expect(txt).toMatch(/- \[Premium Yam\]\(https?:\/\/[^)]+\/products\/premium-yam\): \$5\.49 per lb — Sold out/);

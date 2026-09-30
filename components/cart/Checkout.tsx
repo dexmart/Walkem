@@ -81,7 +81,7 @@ function InteracDetails() {
         <p className="mb-1 flex items-center gap-2 font-semibold">
           <Landmark className="h-4 w-4 text-primary" /> Payment details
         </p>
-        <p className="mb-3 text-xs text-muted-foreground">Send an Interac e-Transfer to the email below to confirm your order.</p>
+        <p className="mb-3 text-xs text-muted-foreground">Send an Interac e-Transfer to the email below. We prepare your order once the payment arrives.</p>
         <dl className="space-y-2 text-sm">
           <div className="flex items-center justify-between gap-3">
             <dt className="text-muted-foreground">Method</dt>
@@ -132,7 +132,7 @@ function InteracDetails() {
         </span>
         <span>
           <span className="block text-sm font-semibold">I have sent the e-Transfer</span>
-          <span className="block text-xs text-muted-foreground">Tick this if you&apos;ve already sent the payment</span>
+          <span className="block text-xs text-muted-foreground">Tick this if you&apos;ve already sent it — we&apos;ll confirm it arrived before preparing your order</span>
         </span>
       </button>
     </div>

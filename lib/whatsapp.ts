@@ -29,8 +29,14 @@ export function buildOrderMessage(items: CartItem[], store: OrderStore, d: Custo
   }
 
   if (d.payment === "Interac") {
+    // The tick is only the customer's word, so report it as a claim and remind the store to check the bank.
     const to = store.interacEmail ? ` to ${store.interacEmail}` : "";
-    lines.push("", `*Payment:* Interac e-Transfer${to} — ${d.interacSent ? "✅ sent" : "⏳ sending now"} (${subtotal})`);
+    lines.push(
+      "",
+      `*Payment:* Interac e-Transfer (${subtotal})${to}`,
+      `Customer says: ${d.interacSent ? "already sent" : "will send it now"}`,
+      "Please confirm the e-Transfer has arrived in your account before preparing this order.",
+    );
   } else if (d.payment === "Later") {
     lines.push("", `*Payment:* Pay on ${d.fulfilment === "Delivery" ? "delivery" : "pickup"}`);
   }
@@ -52,7 +58,7 @@ export function orderProblem(d: CustomerDetails): string | null {
 }
 
 export function buildContactMessage(f: { name: string; email?: string; phone?: string; message: string }): string {
-  const lines = ["Hi Walkem African Food Market! Message from the website:", "", f.message.trim(), "", `Name: ${f.name.trim()}`];
+  const lines = ["Hi Walkem Authentic African Groceries! Message from the website:", "", f.message.trim(), "", `Name: ${f.name.trim()}`];
   if (f.email?.trim()) lines.push(`Email: ${f.email.trim()}`);
   if (f.phone?.trim()) lines.push(`Phone: ${f.phone.trim()}`);
   return lines.join("\n");

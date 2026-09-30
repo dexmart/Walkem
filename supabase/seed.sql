@@ -27,11 +27,11 @@ on conflict (slug) do nothing;
 insert into public.store_settings (id, name, tagline, hero_title, hero_subtitle, about_text, hours)
 values (
   1,
-  'Walkem African Food Market',
+  'Walkem Authentic African Groceries',
   'Bringing Africa''s Flavours Closer to You',
   'Authentic African Groceries in Moncton',
   'Your Home for Authentic African & Caribbean Foods',
-  'Walkem African Food Market is your premier destination for authentic African groceries. We''re passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence.',
+  'Walkem Authentic African Groceries is your premier destination for authentic African groceries. We''re passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence.',
   '[
     {"day": "Monday", "open": "09:00", "close": "22:00", "closed": false},
     {"day": "Tuesday", "open": "09:00", "close": "22:00", "closed": false},

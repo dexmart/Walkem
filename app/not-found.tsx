@@ -6,7 +6,7 @@ export default function NotFound() {
       <h1 className="font-display text-5xl font-bold text-foreground">Page not found</h1>
       <p className="text-muted-foreground">We couldn&apos;t find that page. It may have moved or sold out.</p>
       <Link href="/" className="font-medium text-primary hover:underline">
-        Back to Walkem African Food Market
+        Back to Walkem Authentic African Groceries
       </Link>
     </main>
   );

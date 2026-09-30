@@ -32,7 +32,7 @@ describe("productSchema", () => {
 });
 
 describe("settingsSchema", () => {
-  const base = { name: "Walkem African Food Market", city: "Moncton", province: "NB", hours: [] };
+  const base = { name: "Walkem Authentic African Groceries", city: "Moncton", province: "NB", hours: [] };
   it("normalises WhatsApp number to digits", () => {
     expect(settingsSchema.parse({ ...base, whatsapp_number: "+1 (506) 555-0123" }).whatsapp_number).toBe("15065550123");
   });

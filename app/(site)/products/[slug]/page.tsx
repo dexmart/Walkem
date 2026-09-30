@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return {};
   const description =
     product.description?.trim() ||
-    `Buy ${product.name} (${product.unit}) at Walkem African Food Market in Moncton — ${formatPrice(product.price)}.`;
+    `Buy ${product.name} (${product.unit}) at Walkem Authentic African Groceries in Moncton — ${formatPrice(product.price)}.`;
   const image = absoluteUrl(coverImage(product.images));
   return {
     title: `${product.name} – ${formatPrice(product.price)} ${product.unit}`,
-    description: `${description} Order on WhatsApp from Walkem African Food Market, Moncton NB.`,
+    description: `${description} Order on WhatsApp from Walkem Authentic African Groceries, Moncton NB.`,
     alternates: { canonical: `/products/${product.slug}` },
     openGraph: { type: "website", title: product.name, description, images: [{ url: image, alt: product.name }] },
     twitter: { card: "summary_large_image", title: product.name, description, images: [image] },

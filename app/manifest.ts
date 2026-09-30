@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Walkem African Food Market",
+    name: "Walkem Authentic African Groceries",
     short_name: "Walkem",
     description: "Authentic African & Caribbean groceries in Moncton, NB",
     start_url: "/",

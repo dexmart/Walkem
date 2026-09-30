@@ -1,6 +1,6 @@
-# Walkem African Food Market
+# Walkem Authentic African Groceries
 
-Online shop for Walkem African Food Market, an African & Caribbean grocery store in Moncton, NB.
+Online shop for Walkem Authentic African Groceries, an African & Caribbean grocery store in Moncton, NB.
 
 - Customers browse products, add them to a cart and send the order on **WhatsApp**. The store confirms the price and pickup/delivery in the chat. No payment is taken on the site.
 - The owner manages products, photos, prices, stock, categories, opening hours and contact details at **`/admin`**.

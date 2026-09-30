@@ -6,7 +6,7 @@ import type { Category, Product, ProductWithCategory, StoreSettings } from "./ty
 // On failure they log and return empty/default data so pages still render.
 
 export const DEFAULT_SETTINGS: StoreSettings = {
-  name: "Walkem African Food Market",
+  name: "Walkem Authentic African Groceries",
   tagline: "Bringing Africa's Flavours Closer to You",
   whatsapp_number: null,
   phone: null,

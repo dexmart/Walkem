@@ -8,13 +8,13 @@ import "./globals.css";
 const sans = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-sans", display: "swap" });
 const display = Playfair_Display({ subsets: ["latin"], weight: ["700", "800"], variable: "--font-display", display: "swap" });
 
-const TITLE = "Walkem African Food Market – African Groceries in Moncton, NB";
+const TITLE = "Walkem Authentic African Groceries – Moncton, NB";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: TITLE, template: "%s | Walkem African Food Market" },
+  title: { default: TITLE, template: "%s | Walkem Authentic African Groceries" },
   description: SITE_DESCRIPTION,
-  applicationName: "Walkem African Food Market",
+  applicationName: "Walkem Authentic African Groceries",
   keywords: [
     "African grocery Moncton",
     "African store Moncton",
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
     "palm oil",
     "egusi",
     "African spices",
-    "Walkem African Food Market",
+    "Walkem Authentic African Groceries",
   ],
-  authors: [{ name: "Walkem African Food Market" }],
+  authors: [{ name: "Walkem Authentic African Groceries" }],
   alternates: { canonical: "/", types: { "text/plain": "/llms.txt" } },
   openGraph: {
     type: "website",
     locale: "en_CA",
-    siteName: "Walkem African Food Market",
+    siteName: "Walkem Authentic African Groceries",
     title: TITLE,
     description: SITE_DESCRIPTION,
     url: "/",
