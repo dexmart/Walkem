@@ -6,8 +6,9 @@ export default function Footer({ settings: s, categories }: { settings: StoreSet
   const year = new Date().getFullYear();
   const cityLine = [s.city, s.province].filter(Boolean).join(", ") + (s.postal_code ? ` ${s.postal_code}` : "");
 
+  // Extra bottom padding so the floating WhatsApp and cart buttons never cover the last line.
   return (
-    <footer className="bg-foreground py-12 text-background">
+    <footer className="bg-foreground pb-28 pt-12 text-background sm:pb-32">
       <div className="container mx-auto px-4">
         <div className="mb-8 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="sm:col-span-2">
