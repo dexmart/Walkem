@@ -5,14 +5,14 @@ import type { CartItem, CustomerDetails } from "@/lib/types";
 const yam: CartItem = { productId: "1", slug: "premium-yam", name: "Premium Yam", price: 5.49, unit: "per lb", image: null, qty: 3, maxQty: 10 };
 const oil: CartItem = { productId: "2", slug: "red-palm-oil", name: "Red Palm Oil", price: 12.99, unit: "per bottle", image: null, qty: 1, maxQty: 4 };
 
-const STORE = { name: "Walkem Authentic African Groceries", interacEmail: "walkemfoods@gmail.com" };
+const STORE = { name: "Walkem African Food Market", interacEmail: "walkemcommunications@gmail.com" };
 const ada: CustomerDetails = { name: "Ada Obi", phone: "(506) 555-0123", fulfilment: "Pickup", payment: "Later" };
 
 describe("buildOrderMessage", () => {
   it("lays out customer, items, subtotal, fulfilment and payment", () => {
     expect(buildOrderMessage([yam, oil], STORE, ada)).toBe(
       [
-        "🛒 *New order — Walkem Authentic African Groceries*",
+        "🛒 *New order — Walkem African Food Market*",
         "",
         "*Customer*",
         "Name: Ada Obi",
@@ -40,7 +40,7 @@ describe("buildOrderMessage", () => {
   it("reports the customer's Interac claim without presenting it as confirmed", () => {
     const check = "Please confirm the e-Transfer has arrived in your account before preparing this order.";
     const sent = buildOrderMessage([oil], STORE, { ...ada, payment: "Interac", interacSent: true });
-    expect(sent).toContain(`*Payment:* Interac e-Transfer ($12.99) to walkemfoods@gmail.com\nCustomer says: already sent\n${check}`);
+    expect(sent).toContain(`*Payment:* Interac e-Transfer ($12.99) to walkemcommunications@gmail.com\nCustomer says: already sent\n${check}`);
     const notYet = buildOrderMessage([oil], STORE, { ...ada, payment: "Interac", interacSent: false });
     expect(notYet).toContain(`Customer says: will send it now\n${check}`);
     expect(sent).not.toMatch(/✅|paid/i);
@@ -78,6 +78,6 @@ it("normalizePhone strips non-digits", () => expect(normalizePhone("+1 506-555")
 
 it("buildContactMessage includes provided fields", () => {
   expect(buildContactMessage({ name: "Ada", phone: "506", message: "Do you stock ogiri?" })).toBe(
-    "Hi Walkem Authentic African Groceries! Message from the website:\n\nDo you stock ogiri?\n\nName: Ada\nPhone: 506",
+    "Hi Walkem African Food Market! Message from the website:\n\nDo you stock ogiri?\n\nName: Ada\nPhone: 506",
   );
 });

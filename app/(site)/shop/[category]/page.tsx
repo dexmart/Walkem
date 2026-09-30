@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {};
   return {
     title: `${category.name} – African Groceries in Moncton`,
-    description: `Shop ${category.name.toLowerCase()} at Walkem Authentic African Groceries in Moncton, NB. Authentic African & Caribbean groceries — order on WhatsApp.`,
+    description: `Shop ${category.name.toLowerCase()} at Walkem African Food Market in Moncton, NB. Authentic African & Caribbean groceries — order on WhatsApp.`,
     alternates: { canonical: `/shop/${category.slug}` },
   };
 }
@@ -47,7 +47,7 @@ export default async function CategoryPage({ params }: Props) {
       <Breadcrumbs items={crumbs} />
       <h1 className="mb-3 font-display text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">{category.name}</h1>
       <p className="mb-8 max-w-2xl text-muted-foreground">
-        Authentic {category.name.toLowerCase()} available at Walkem Authentic African Groceries in Moncton.{" "}
+        Authentic {category.name.toLowerCase()} available at Walkem African Food Market in Moncton.{" "}
         <Link href="/shop" className="text-primary hover:underline">
           Search all products
         </Link>

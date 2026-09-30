@@ -62,7 +62,7 @@ function InteracDetails() {
   const { items, details, setDetails, interacEmail } = useCart();
   const [copied, setCopied] = useState(false);
   const amount = formatPrice(cartTotal(items));
-  const email = interacEmail ?? "walkemfoods@gmail.com";
+  const email = interacEmail ?? "walkemcommunications@gmail.com";
 
   const copy = async () => {
     try {

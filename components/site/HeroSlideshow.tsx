@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const SLIDES = [
-  { src: "/hero/hero-1.jpg", alt: "Maggi, Nido, palm oil, groundnuts and fresh cassava at Walkem Authentic African Groceries" },
+  { src: "/hero/hero-1.jpg", alt: "Maggi, Nido, palm oil, groundnuts and fresh cassava at Walkem African Food Market" },
   { src: "/hero/hero-2.jpg", alt: "Plantain, fresh fish, Peak and Nido milk, noodles and seasonings at Walkem" },
   { src: "/hero/hero-3.jpg", alt: "Vitamalt, Maltex, rice, pounded yam flour and fresh yams at Walkem" },
 ];

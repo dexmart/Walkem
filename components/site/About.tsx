@@ -28,7 +28,7 @@ export default function About({ aboutText }: { aboutText: string | null }) {
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {aboutText ??
-              "Walkem Authentic African Groceries is your premier destination for authentic African groceries. We're passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence."}
+              "Walkem African Food Market is your premier destination for authentic African groceries. We're passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence."}
           </p>
         </div>
 
