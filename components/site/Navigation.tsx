@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { BrandLogo } from "./BrandLogo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -39,16 +39,8 @@ export default function Navigation({ storeName }: { storeName: string }) {
     >
       <nav className="container mx-auto px-4 py-3" aria-label="Main">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex min-w-0 shrink items-center" onClick={() => setIsMobileMenuOpen(false)}>
-            <Image
-              src="/brand/walkem-logo.png"
-              alt={storeName}
-              width={1000}
-              height={272}
-              priority
-              sizes="(max-width: 640px) 160px, 200px"
-              className="h-10 w-auto sm:h-12"
-            />
+          <Link href="/" aria-label={`${storeName} home`} className="flex min-w-0 shrink items-center" onClick={() => setIsMobileMenuOpen(false)}>
+            <BrandLogo name={storeName} />
           </Link>
 
           <div className="hidden items-center gap-7 md:flex">

@@ -20,7 +20,7 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   latitude: null,
   longitude: null,
   hours: [],
-  hero_title: "Authentic African Groceries in Moncton",
+  hero_title: "Walkem African Food Market in Moncton",
   hero_subtitle: "Your Home for Authentic African & Caribbean Foods",
   about_text: null,
 };

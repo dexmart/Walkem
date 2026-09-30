@@ -29,7 +29,7 @@ values (
   1,
   'Walkem African Food Market',
   'Bringing Africa''s Flavours Closer to You',
-  'Authentic African Groceries in Moncton',
+  'Walkem African Food Market in Moncton',
   'Your Home for Authentic African & Caribbean Foods',
   'Walkem African Food Market is your premier destination for authentic African groceries. We''re passionate about connecting our community with the flavors of home through quality products, exceptional service, and a commitment to cultural excellence.',
   '[

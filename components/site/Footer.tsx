@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { BrandLogo } from "./BrandLogo";
 import type { Category, StoreSettings } from "@/lib/types";
 
 export default function Footer({ settings: s, categories }: { settings: StoreSettings; categories: Category[] }) {
@@ -11,10 +11,7 @@ export default function Footer({ settings: s, categories }: { settings: StoreSet
       <div className="container mx-auto px-4">
         <div className="mb-8 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="sm:col-span-2">
-            {/* White card behind the logo so its black lettering stays readable on the dark footer. */}
-            <div className="mb-4 inline-flex rounded-xl bg-white px-4 py-3">
-              <Image src="/brand/walkem-logo.png" alt={s.name} width={1000} height={272} sizes="220px" className="h-12 w-auto" />
-            </div>
+            <BrandLogo name={s.name} variant="dark" className="mb-4" />
             <p className="mb-4 max-w-md text-background/80">
               Your trusted source for authentic African &amp; Caribbean groceries and fresh produce in {s.city}, New
               Brunswick.

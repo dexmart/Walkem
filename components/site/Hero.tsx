@@ -5,7 +5,7 @@ import type { StoreSettings } from "@/lib/types";
 import { HeroSlideshow } from "./HeroSlideshow";
 
 export default function Hero({ settings }: { settings: StoreSettings }) {
-  const title = settings.hero_title ?? "Authentic African Groceries in Moncton";
+  const title = settings.hero_title ?? "Walkem African Food Market in Moncton";
   // Highlight "in <City>" on its own line when the title ends with it, as in the original design.
   const match = title.match(/^(.*?)(\s+in\s+\S.*)$/i);
 
