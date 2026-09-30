@@ -10,7 +10,7 @@ import { storeJsonLd, websiteJsonLd } from "@/lib/seo";
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const [settings, categories] = await Promise.all([getSettings(), getCategories()]);
   return (
-    <CartProvider storeName={settings.name} whatsappNumber={settings.whatsapp_number}>
+    <CartProvider storeName={settings.name} whatsappNumber={settings.whatsapp_number} interacEmail={settings.interac_email}>
       <JsonLd data={[storeJsonLd(settings), websiteJsonLd(settings)]} />
       <Navigation storeName={settings.name} />
       <main id="main">{children}</main>

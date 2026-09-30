@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { StoreSettings } from "@/lib/types";
+import { HeroSlideshow } from "./HeroSlideshow";
 
 export default function Hero({ settings }: { settings: StoreSettings }) {
   const title = settings.hero_title ?? "Authentic African Groceries in Moncton";
@@ -11,17 +11,7 @@ export default function Hero({ settings }: { settings: StoreSettings }) {
 
   return (
     <section id="home" className="relative flex min-h-[88svh] items-center overflow-hidden md:min-h-screen">
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/seed/hero-banner.jpg"
-          alt="Fresh African produce at Walkem African Food Market"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/30 md:to-transparent" />
-      </div>
+      <HeroSlideshow />
 
       <div className="container relative z-10 mx-auto px-4 pb-20 pt-28 md:py-32">
         <div className="max-w-2xl animate-fade-in-up">
@@ -56,7 +46,7 @@ export default function Hero({ settings }: { settings: StoreSettings }) {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-background to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 }

@@ -30,6 +30,7 @@ type CartContextValue = {
   setDetails: React.Dispatch<React.SetStateAction<CustomerDetails>>;
   storeName: string;
   whatsappNumber: string | null;
+  interacEmail: string | null;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -38,10 +39,12 @@ export function CartProvider({
   children,
   storeName,
   whatsappNumber,
+  interacEmail,
 }: {
   children: ReactNode;
   storeName: string;
   whatsappNumber: string | null;
+  interacEmail: string | null;
 }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] });
   const [open, setOpen] = useState(false);
@@ -125,8 +128,9 @@ export function CartProvider({
       setDetails,
       storeName,
       whatsappNumber,
+      interacEmail,
     }),
-    [state.items, open, add, refresh, details, storeName, whatsappNumber],
+    [state.items, open, add, refresh, details, storeName, whatsappNumber, interacEmail],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

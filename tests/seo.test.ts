@@ -8,6 +8,7 @@ const settings: StoreSettings = {
   whatsapp_number: null,
   phone: null,
   email: "hello@example.com",
+  interac_email: "walkemfoods@gmail.com",
   address_line: null,
   city: "Moncton",
   province: "NB",

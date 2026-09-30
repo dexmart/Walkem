@@ -5,11 +5,11 @@ import type { Category } from "@/lib/types";
 export function CategoryChips({ categories, active, query = "" }: { categories: Category[]; active?: string; query?: string }) {
   const chip = (isActive: boolean) =>
     cn(
-      "whitespace-nowrap rounded-full border-2 px-4 py-2 text-sm font-medium transition-colors",
+      "inline-flex items-center whitespace-nowrap rounded-full border-2 px-4 py-2 text-sm font-medium transition-colors",
       isActive ? "border-primary bg-primary text-primary-foreground" : "border-muted bg-background hover:border-primary",
     );
   return (
-    <nav aria-label="Categories" className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
+    <nav aria-label="Categories" className="-mx-4 overflow-x-auto px-4 py-1 sm:mx-0 sm:px-0">
       <ul className="flex gap-2 sm:flex-wrap sm:justify-center">
         <li>
           <Link href={`/shop${query}`} className={chip(!active)}>

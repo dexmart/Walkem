@@ -30,6 +30,8 @@ export type StoreSettings = {
   whatsapp_number: string | null;
   phone: string | null;
   email: string | null;
+  /** Where customers send Interac e-Transfers. */
+  interac_email: string | null;
   address_line: string | null;
   city: string;
   province: string;
@@ -54,4 +56,13 @@ export type CartItem = {
   maxQty: number;
 };
 
-export type CustomerDetails = { name?: string; fulfilment?: "Pickup" | "Delivery"; address?: string; notes?: string };
+export type CustomerDetails = {
+  name?: string;
+  phone?: string;
+  fulfilment?: "Pickup" | "Delivery";
+  address?: string;
+  /** Interac e-Transfer now, or pay in person on pickup/delivery. */
+  payment?: "Interac" | "Later";
+  interacSent?: boolean;
+  notes?: string;
+};

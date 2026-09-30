@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   whatsapp_number: null,
   phone: null,
   email: null,
+  interac_email: "walkemfoods@gmail.com",
   address_line: null,
   city: "Moncton",
   province: "NB",
@@ -49,6 +50,8 @@ export type ProductQuery = {
   inStockOnly?: boolean;
   fresh?: boolean;
   featured?: boolean;
+  /** Most recently added first (instead of in-stock, fresh, then A–Z). */
+  newest?: boolean;
   limit?: number;
 };
 
@@ -65,7 +68,9 @@ export async function getProducts(opts: ProductQuery = {}): Promise<ProductWithC
   const term = opts.q?.replace(/[,()%*\\]/g, " ").trim();
   if (term) query = query.or(`name.ilike.%${term}%,description.ilike.%${term}%`);
 
-  query = query.order("in_stock", { ascending: false }).order("is_fresh", { ascending: false }).order("name");
+  query = opts.newest
+    ? query.order("created_at", { ascending: false })
+    : query.order("in_stock", { ascending: false }).order("is_fresh", { ascending: false }).order("name");
   if (opts.limit) query = query.limit(opts.limit);
 
   const { data, error } = await query;

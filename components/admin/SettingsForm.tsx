@@ -88,6 +88,14 @@ export function SettingsForm({ settings }: { settings: StoreSettings }) {
             <Input id="email" type="email" {...register("email")} />
           </Field>
         </div>
+        <Field
+          id="interac_email"
+          label="Interac e-Transfer email"
+          hint="Shown at checkout when a customer chooses to pay by Interac e-Transfer."
+          error={msg("interac_email")}
+        >
+          <Input id="interac_email" type="email" {...register("interac_email")} />
+        </Field>
       </section>
 
       <section className="space-y-4 rounded-xl border bg-background p-4 sm:p-6">

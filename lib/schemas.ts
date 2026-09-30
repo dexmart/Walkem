@@ -77,6 +77,7 @@ export const settingsSchema = z.object({
     .transform((v) => v || null),
   phone: optionalText,
   email: optionalText.refine((v) => v === null || z.string().email().safeParse(v).success, "Enter a valid email"),
+  interac_email: optionalText.refine((v) => v === null || z.string().email().safeParse(v).success, "Enter a valid email"),
   address_line: optionalText,
   city: z.string().trim().min(1, "City is required"),
   province: z.string().trim().min(1, "Province is required"),

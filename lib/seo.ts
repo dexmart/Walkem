@@ -24,7 +24,7 @@ export function storeJsonLd(s: StoreSettings) {
     description: SITE_DESCRIPTION,
     slogan: s.tagline,
     url: SITE_URL,
-    logo: absoluteUrl("/icon"),
+    logo: absoluteUrl("/brand/walkem-mark-512.png"),
     image: absoluteUrl("/opengraph-image"),
     telephone: s.phone ?? (s.whatsapp_number ? `+${s.whatsapp_number}` : null),
     email: s.email,

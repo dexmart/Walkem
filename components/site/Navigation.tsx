@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CartButton } from "@/components/cart/CartButton";
 import { cn } from "@/lib/utils";
@@ -20,7 +21,6 @@ export default function Navigation({ storeName }: { storeName: string }) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const transparent = pathname === "/" && !isScrolled && !isMobileMenuOpen;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -32,15 +32,23 @@ export default function Navigation({ storeName }: { storeName: string }) {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        transparent ? "bg-transparent" : "bg-background/95 shadow-md backdrop-blur-md",
+        // Frosted-glass bar that always floats above the page.
+        "fixed inset-x-0 top-0 z-50 border-b border-white/50 bg-white/60 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-300 supports-[backdrop-filter]:bg-white/50",
+        isScrolled || isMobileMenuOpen ? "shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)]" : "shadow-none",
       )}
     >
       <nav className="container mx-auto px-4 py-3" aria-label="Main">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex min-w-0 items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-            <ShoppingBag className="h-7 w-7 shrink-0 text-primary sm:h-8 sm:w-8" />
-            <span className="truncate font-display text-xl font-bold text-foreground sm:text-2xl">{storeName}</span>
+          <Link href="/" className="flex min-w-0 shrink items-center" onClick={() => setIsMobileMenuOpen(false)}>
+            <Image
+              src="/brand/walkem-logo.png"
+              alt={storeName}
+              width={1000}
+              height={272}
+              priority
+              sizes="(max-width: 640px) 160px, 200px"
+              className="h-10 w-auto sm:h-12"
+            />
           </Link>
 
           <div className="hidden items-center gap-7 md:flex">

@@ -15,13 +15,15 @@ export const revalidate = 3600;
 export const metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
-  const [settings, categories, fresh, featured, menu] = await Promise.all([
+  const [settings, categories, fresh, featuredPicks, menu] = await Promise.all([
     getSettings(),
     getCategories(),
     getProducts({ fresh: true, inStockOnly: true, limit: 4 }),
     getProducts({ featured: true, limit: 8 }),
     getProducts({ categorySlug: "restaurant-bar" }),
   ]);
+  // Featured products if the owner has picked some, otherwise the newest ones, so the section is never empty.
+  const featured = featuredPicks.length ? featuredPicks : await getProducts({ newest: true, limit: 8 });
 
   return (
     <>

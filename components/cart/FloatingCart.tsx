@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Trash2 } from "lucide-react";
+import { MessageCircle, ShoppingBag, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
 import { FALLBACK_IMAGE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useCart } from "./CartProvider";
 import { QtyStepper } from "./QtyStepper";
-import { CheckoutFields, OrderNowButton } from "./Checkout";
 
 /**
  * Basket pinned to the bottom-right corner. On devices with a mouse, hovering shows a mini cart
- * (edit quantities, remove, order on WhatsApp); clicking or tapping opens the full cart panel.
+ * (edit quantities, remove, then Order now → full checkout); clicking or tapping opens the full cart panel.
  */
 export function FloatingCart() {
   const { items, count, total, open: sheetOpen, setOpen, setQty, remove, refresh } = useCart();
@@ -69,14 +69,15 @@ export function FloatingCart() {
       ref={containerRef}
       onKeyDown={(e) => e.key === "Escape" && setPreview(false)}
       onBlur={(e) => {
-        if (!containerRef.current?.contains(e.relatedTarget as Node | null) && !containerRef.current?.matches(":hover")) hidePreview();
+        if (!containerRef.current?.contains(e.relatedTarget as Node | null) && !containerRef.current?.matches(":hover"))
+          hidePreview();
       }}
     >
       {preview && (
         <div
           role="dialog"
           aria-label="Cart preview"
-          className="absolute bottom-[4.5rem] right-0 flex max-h-[80vh] w-[22rem] flex-col overflow-hidden rounded-2xl border bg-background shadow-[var(--shadow-elevated)] animate-scale-in"
+          className="absolute bottom-[4.5rem] right-0 flex max-h-[70vh] w-[22rem] flex-col overflow-hidden rounded-3xl border border-white/60 bg-background/90 backdrop-blur-xl shadow-[var(--shadow-elevated)] animate-scale-in"
         >
           <div className="flex items-center justify-between border-b px-4 py-3">
             <p className="font-display text-lg font-bold">Your cart</p>
@@ -136,16 +137,20 @@ export function FloatingCart() {
                 </ul>
               </div>
 
-              <div className="space-y-2 border-t px-4 py-3">
+              <div className="space-y-3 border-t px-4 py-3">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-sm text-muted-foreground">Estimated total</span>
-                  <span className="text-xl font-bold text-primary">{formatPrice(total)}</span>
+                  <span className="text-sm font-semibold">Subtotal</span>
+                  <span className="font-display text-xl font-bold text-primary">{formatPrice(total)} CAD</span>
                 </div>
-                <CheckoutFields idPrefix="mini" />
-                <OrderNowButton />
-                <button type="button" onClick={openFullCart} className="w-full text-center text-sm text-muted-foreground underline hover:text-foreground">
-                  View full cart · add name &amp; notes
-                </button>
+                {/* Checkout needs name, phone, pickup/delivery and payment, so ordering continues in the full cart. */}
+                <Button
+                  onClick={openFullCart}
+                  className="h-11 w-full rounded-full bg-[#25D366] font-semibold text-white hover:bg-[#1ebe5b]"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Order now
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">Next: pickup or delivery, your details and payment.</p>
               </div>
             </>
           )}

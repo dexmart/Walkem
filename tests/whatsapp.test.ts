@@ -1,47 +1,68 @@
 import { describe, it, expect } from "vitest";
 import { buildOrderMessage, buildWhatsAppUrl, normalizePhone, buildContactMessage, orderProblem } from "@/lib/whatsapp";
-import type { CartItem } from "@/lib/types";
+import type { CartItem, CustomerDetails } from "@/lib/types";
 
 const yam: CartItem = { productId: "1", slug: "premium-yam", name: "Premium Yam", price: 5.49, unit: "per lb", image: null, qty: 3, maxQty: 10 };
 const oil: CartItem = { productId: "2", slug: "red-palm-oil", name: "Red Palm Oil", price: 12.99, unit: "per bottle", image: null, qty: 1, maxQty: 4 };
 
+const STORE = { name: "Walkem African Food Market", interacEmail: "walkemfoods@gmail.com" };
+const ada: CustomerDetails = { name: "Ada Obi", phone: "(506) 555-0123", fulfilment: "Pickup", payment: "Later" };
+
 describe("buildOrderMessage", () => {
-  it("lists items, line totals and estimated total", () => {
-    const msg = buildOrderMessage([yam, oil], "Walkem African Food Market");
-    expect(msg).toBe(
+  it("lays out customer, items, subtotal, fulfilment and payment", () => {
+    expect(buildOrderMessage([yam, oil], STORE, ada)).toBe(
       [
-        "Hi Walkem African Food Market! I'd like to order:",
-        "• Premium Yam × 3 (per lb) — $16.47",
-        "• Red Palm Oil × 1 (per bottle) — $12.99",
+        "🛒 *New order — Walkem African Food Market*",
         "",
-        "Estimated total: $29.46 CAD",
+        "*Customer*",
+        "Name: Ada Obi",
+        "Phone: (506) 555-0123",
+        "",
+        "*Items*",
+        "1. Premium Yam — 3 × $5.49 (per lb) = $16.47",
+        "2. Red Palm Oil — 1 × $12.99 (per bottle) = $12.99",
+        "",
+        "*Subtotal: $29.46 CAD* (4 items)",
+        "",
+        "*Pickup* at the store",
+        "",
+        "*Payment:* Pay on pickup",
       ].join("\n"),
     );
   });
 
-  it("appends customer details only when given", () => {
-    const msg = buildOrderMessage([oil], "Walkem African Food Market", { name: "Ada", fulfilment: "Pickup", notes: "After 5pm" });
-    expect(msg.endsWith("Name: Ada\nPickup / Delivery: Pickup\nNotes: After 5pm")).toBe(true);
+  it("includes the delivery address and a delivery-fee note for delivery orders", () => {
+    const msg = buildOrderMessage([oil], STORE, { ...ada, fulfilment: "Delivery", address: " 12 King St, Moncton ", payment: "Later" });
+    expect(msg).toContain("*Delivery*\nAddress: 12 King St, Moncton\nDelivery fee (if any) to be confirmed.");
+    expect(msg).toContain("*Payment:* Pay on delivery");
   });
 
-  it("includes the delivery address for delivery orders only", () => {
-    const delivery = buildOrderMessage([oil], "Walkem African Food Market", { fulfilment: "Delivery", address: " 12 King St, Moncton " });
-    expect(delivery.endsWith("Pickup / Delivery: Delivery\nDelivery address: 12 King St, Moncton")).toBe(true);
-    const pickup = buildOrderMessage([oil], "Walkem African Food Market", { fulfilment: "Pickup", address: "12 King St" });
-    expect(pickup).not.toContain("Delivery address");
+  it("describes Interac payment and whether it was sent", () => {
+    const sent = buildOrderMessage([oil], STORE, { ...ada, payment: "Interac", interacSent: true });
+    expect(sent).toContain("*Payment:* Interac e-Transfer to walkemfoods@gmail.com — ✅ sent ($12.99)");
+    const notYet = buildOrderMessage([oil], STORE, { ...ada, payment: "Interac", interacSent: false });
+    expect(notYet).toContain("*Payment:* Interac e-Transfer to walkemfoods@gmail.com — ⏳ sending now ($12.99)");
+  });
+
+  it("adds notes last and omits empty ones", () => {
+    expect(buildOrderMessage([oil], STORE, { ...ada, notes: "  After 5pm " }).endsWith("\n\n*Notes:* After 5pm")).toBe(true);
+    expect(buildOrderMessage([oil], STORE, { ...ada, notes: "  " })).not.toContain("Notes");
   });
 });
 
 describe("orderProblem", () => {
-  it("requires a pickup/delivery choice", () => {
-    expect(orderProblem({})).toBe("Choose pickup or delivery");
+  const ok: CustomerDetails = { fulfilment: "Pickup", name: "Ada", phone: "506 555 0123", payment: "Later" };
+  it("accepts a complete pickup order", () => expect(orderProblem(ok)).toBeNull());
+  it("asks for each missing field in order", () => {
+    expect(orderProblem({ ...ok, fulfilment: undefined })).toBe("Choose pickup or delivery");
+    expect(orderProblem({ ...ok, name: " " })).toBe("Add your name");
+    expect(orderProblem({ ...ok, phone: "" })).toBe("Add your phone number");
+    expect(orderProblem({ ...ok, phone: "555-01" })).toBe("Check your phone number");
+    expect(orderProblem({ ...ok, fulfilment: "Delivery", address: "  " })).toBe("Add your delivery address");
+    expect(orderProblem({ ...ok, payment: undefined })).toBe("Choose how you'll pay");
   });
-  it("requires an address for delivery", () => {
-    expect(orderProblem({ fulfilment: "Delivery", address: "  " })).toBe("Add your delivery address");
-    expect(orderProblem({ fulfilment: "Delivery", address: "12 King St" })).toBeNull();
-  });
-  it("accepts pickup without an address", () => {
-    expect(orderProblem({ fulfilment: "Pickup" })).toBeNull();
+  it("accepts delivery with an address", () => {
+    expect(orderProblem({ ...ok, fulfilment: "Delivery", address: "12 King St" })).toBeNull();
   });
 });
 
