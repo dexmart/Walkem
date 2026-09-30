@@ -1,6 +1,7 @@
 import { CartProvider } from "@/components/cart/CartProvider";
 import { CartSheet } from "@/components/cart/CartSheet";
 import { FloatingCart } from "@/components/cart/FloatingCart";
+import { FloatingWhatsApp } from "@/components/cart/FloatingWhatsApp";
 import Navigation from "@/components/site/Navigation";
 import Footer from "@/components/site/Footer";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -16,6 +17,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <main id="main">{children}</main>
       <Footer settings={settings} categories={categories} />
       <CartSheet />
+      <FloatingWhatsApp />
       <FloatingCart />
     </CartProvider>
   );
